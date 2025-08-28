@@ -67,7 +67,10 @@ class BasePPGProcessor:
                     f.write(chunk)  # Write each chunk to the file
                     pbar.update(len(chunk))  # Update the progress bar
         return filename
-
+        
+    # original paper: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9358140
+    # code from here: https://github.com/seongsilheo/stress_classification_with_PPG/blob/master/preprocessing_tool/noise_reduction.py
+    
     def denoisePPG(self, ppg_input: np.ndarray, orighz: int = 64) -> np.ndarray:
         """
         Denoises PPG input data using bandpass filtering and Fourier reconstruction.
@@ -303,7 +306,7 @@ class BasePPGProcessor:
 
         :return: Tuple of PPG signals, labels, and patient names.
         """
-        print("Processing PPG files ...")
+        print("Processing WESAD PPG...")
         ppgs, labels, names = [], [], []
         folders = os.listdir(os.path.join(self.ppgpath, "WESAD"))
         folders.sort()
@@ -342,7 +345,7 @@ class BasePPGProcessor:
         :param ppgs_minlen: Array of truncated PPG signals.
         :return: Array of denoised PPG signals.
         """
-        print("Denoising PPG ...")
+        print("Denoising WESAD PPG ...")
         ppgs_filtered = []
         for i in range(ppgs_minlen.shape[0]):
             ppg_filtered = self.denoisePPG(ppgs_minlen[i, :, 0])
@@ -368,23 +371,40 @@ class BasePPGProcessor:
         test_inds = inds[13:15]
 
         return train_inds, val_inds, test_inds
-
-class BinaryPPGProcessor(BasePPGProcessor):
-    """
-    Processor for binary classification of PPG data.
-    """
+                
     def preprocess_PPGdata(self) -> None:
         """
-        Preprocesses PPG data for binary classification.
-
-        :param reprocess: Flag to reprocess existing data.
+        Preprocesses PPG data for multi-class classification.
         """
         ppgs, labels, names = self.load_data()
         ppgs_minlen, labels_minlen = self.truncate_data(ppgs, labels)
         labels_original = labels
         ppgs_filtered = self.denoise_all(ppgs_minlen)
         train_inds, val_inds, test_inds = self.create_splits(ppgs_filtered)
-        self.create_subsequences_and_save(ppgs_filtered, labels_original, names, train_inds, val_inds, test_inds)
+        self.create_subsequences_and_save(ppgs_filtered, labels_original, names, train_inds, val_inds, test_inds)        
+
+
+    def save_data(self, data_subseq: List[np.ndarray], names_subseq: List[str], labels_subseq: List[np.ndarray], subset: str) -> None:
+        """
+        Saves the processed subsequences to disk.
+
+        :param data_subseq: List of data subsequences.
+        :param names_subseq: List of corresponding participant names.
+        :param labels_subseq: List of corresponding labels.
+        :param subset: Subset identifier (train, val, or test).
+        """
+        data_numpy = np.transpose(np.concatenate(data_subseq), (0, 2, 1))
+        names_numpy = np.array(names_subseq)
+        labels_numpy = np.concatenate(labels_subseq) - 1
+
+        np.save(os.path.join(self.processedppgpath, f"{subset}_X_ppg_{self.newhz}Hz.npy"), data_numpy)
+        np.save(os.path.join(self.processedppgpath, f"{subset}_names_subseq_{self.newhz}Hz.npy"), names_numpy)
+        np.save(os.path.join(self.processedppgpath, f"{subset}_y_stress_{self.newhz}Hz.npy"), labels_numpy)
+
+class BinaryPPGProcessor(BasePPGProcessor):
+    """    
+    Processor for binary classification of PPG data.    
+    """
 
     def create_subsequences_and_save(self, ppgs_filtered: np.ndarray, labels_original: List[np.ndarray], names: np.ndarray, train_inds: np.ndarray, val_inds: np.ndarray, test_inds: np.ndarray) -> None:
         """
@@ -456,37 +476,11 @@ class BinaryPPGProcessor(BasePPGProcessor):
         self.save_data(data_subseq_val, names_subseq_val, labels_subseq_val, "val")
         self.save_data(data_subseq_test, names_subseq_test, labels_subseq_test, "test")
 
-    def save_data(self, data_subseq: List[np.ndarray], names_subseq: List[str], labels_subseq: List[np.ndarray], subset: str) -> None:
-        """
-        Saves the processed subsequences to disk.
-
-        :param data_subseq: List of data subsequences.
-        :param names_subseq: List of corresponding participant names.
-        :param labels_subseq: List of corresponding labels.
-        :param subset: Subset identifier (train, val, or test).
-        """
-        data_numpy = np.transpose(np.concatenate(data_subseq), (0, 2, 1))
-        names_numpy = np.array(names_subseq)
-        labels_numpy = np.concatenate(labels_subseq) - 1
-
-        np.save(os.path.join(self.processedppgpath, f"{subset}_X_ppg_{self.newhz}Hz.npy"), data_numpy)
-        np.save(os.path.join(self.processedppgpath, f"{subset}_names_subseq_{self.newhz}Hz.npy"), names_numpy)
-        np.save(os.path.join(self.processedppgpath, f"{subset}_y_stress_{self.newhz}Hz.npy"), labels_numpy)
 
 class MultiClassPPGProcessor(BasePPGProcessor):
     """
-    Processor for multi-class classification of PPG data.
+    Processor for multi-class classification of PPG data.    
     """
-    def preprocess_PPGdata(self) -> None:
-        """
-        Preprocesses PPG data for multi-class classification.
-        """
-        ppgs, labels, names = self.load_data()
-        ppgs_minlen, labels_minlen = self.truncate_data(ppgs, labels)
-        labels_original = labels
-        ppgs_filtered = self.denoise_all(ppgs_minlen)
-        train_inds, val_inds, test_inds = self.create_splits(ppgs_filtered)
-        self.create_subsequences_and_save(ppgs_filtered, labels_original, names, train_inds, val_inds, test_inds)
 
     def create_subsequences_and_save(self, ppgs_filtered: np.ndarray, labels_original: List[np.ndarray], names: np.ndarray, train_inds: np.ndarray, val_inds: np.ndarray, test_inds: np.ndarray) -> None:
         """
@@ -568,22 +562,7 @@ class MultiClassPPGProcessor(BasePPGProcessor):
         self.save_data(data_subseq_val, names_subseq_val, labels_subseq_val, "val")
         self.save_data(data_subseq_test, names_subseq_test, labels_subseq_test, "test")
 
-    def save_data(self, data_subseq: List[np.ndarray], names_subseq: List[str], labels_subseq: List[np.ndarray], subset: str) -> None:
-        """
-        Saves the processed subsequences to disk.
 
-        :param data_subseq: List of data subsequences.
-        :param names_subseq: List of corresponding participant names.
-        :param labels_subseq: List of corresponding labels.
-        :param subset: Subset identifier (train, val, or test).
-        """
-        data_numpy = np.transpose(np.concatenate(data_subseq), (0, 2, 1))
-        names_numpy = np.array(names_subseq)
-        labels_numpy = np.concatenate(labels_subseq) - 1
-
-        np.save(os.path.join(self.processedppgpath, f"{subset}_X_ppg_{self.newhz}Hz.npy"), data_numpy)
-        np.save(os.path.join(self.processedppgpath, f"{subset}_names_subseq_{self.newhz}Hz.npy"), names_numpy)
-        np.save(os.path.join(self.processedppgpath, f"{subset}_y_stress_{self.newhz}Hz.npy"), labels_numpy)
 
 def main(newhz: int) -> None:
     """
@@ -595,13 +574,13 @@ def main(newhz: int) -> None:
     binary_processor = BinaryPPGProcessor(zippath="../ppg.zip", ppgpath="../ppg", processedppgpath="../ppg/binary", newhz=newhz)
     binary_processor.downloadextract_PPGfiles()
     binary_processor.preprocess_PPGdata()
-    print(f"PPG data files are ready in {os.path.abspath(binary_processor.processedppgpath)}") 
+    print(f"WESAD PPG data files for binary classification are ready in {os.path.abspath(binary_processor.processedppgpath)}") 
 
     # Initialize and process multi-class classification data
     multiclass_processor = MultiClassPPGProcessor(zippath="../ppg.zip", ppgpath="../ppg", processedppgpath="../ppg/multiclass", newhz=newhz)
     multiclass_processor.downloadextract_PPGfiles()
     multiclass_processor.preprocess_PPGdata()
-    print(f"PPG data files are ready in {os.path.abspath(multiclass_processor.processedppgpath)}") 
+    print(f"WESAD PPG data files for multiclass classification are ready in {os.path.abspath(multiclass_processor.processedppgpath)}") 
 
 if __name__ == "__main__":
     main(newhz=50)
