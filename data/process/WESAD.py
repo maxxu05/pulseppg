@@ -7,7 +7,7 @@ from tqdm import tqdm
 import zipfile
 from scipy.signal import butter, lfilter
 from scipy import fftpack
-from utils import resample_lerp_vectorized as resample_lerp, upsample_lerp_vectorized as upsample_lerp
+from utils import resample_lerp_vectorized as resample_lerp, resample_batch_signal
 
 class BasePPGProcessor:
     """
@@ -98,7 +98,7 @@ class BasePPGProcessor:
         if self.newhz < orighz:
             ppg_newhz = resample_lerp(ppg_real, orighz=orighz, newhz=self.newhz)
         else:
-            ppg_newhz = upsample_lerp(ppg_real, orighz=orighz, newhz=self.newhz)
+            ppg_newhz = resample_batch_signal(ppg_real, orighz=orighz, newhz=self.newhz)
 
         return self.znorm_percent(ppg_newhz, percent=90)
 
