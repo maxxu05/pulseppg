@@ -8,9 +8,9 @@ import os
 from tqdm import tqdm
 from models.utils.CustomDatasets import OnTheFly_FolderNpyDataset
 
-class crossmodalrebardist_ExpConfig(Base_ExpConfig):
+class motifdist_ExpConfig(Base_ExpConfig):
     """
-    Configuration class for the Crossmodal RebarDist experiment, extending Base_ExpConfig.
+    Configuration class for the MotifDist experiment, extending Base_ExpConfig.
 
     Attributes:
         mask_extended (int): Length of the mask to be applied during training.
@@ -26,7 +26,7 @@ class crossmodalrebardist_ExpConfig(Base_ExpConfig):
                  key_dims: list = None, 
                  **kwargs):
         # Initialize with base configuration and additional parameters
-        super().__init__(model_folder="RebarDist", **kwargs)
+        super().__init__(model_folder="MotifDist", **kwargs)
         self.mask_extended = mask_extended
         self.mask_transient_perc = mask_transient_perc
         self.mask_transient_size = mask_transient_size
@@ -35,7 +35,7 @@ class crossmodalrebardist_ExpConfig(Base_ExpConfig):
 
 class Model(BaseModelClass):
     """
-    Model class for training and evaluating the Crossmodal RebarDist model.
+    Model class for training and evaluating the MotifDist model.
 
     Attributes:
         optimizer (torch.optim.Optimizer): Optimizer for model training.
@@ -58,7 +58,7 @@ class Model(BaseModelClass):
             torch.utils.data.DataLoader: Configured data loader.
         """
         # Initialize dataset with masking parameters
-        dataset = rebarcrossattn_maskdataset(
+        dataset = motifattn_maskdataset(
             path=X,
             data_normalizer=self.data_normalizer,
             data_clipping=self.data_clipping,
@@ -183,7 +183,7 @@ class Model(BaseModelClass):
 
         return reconstruct_loss
 
-class rebarcrossattn_maskdataset(OnTheFly_FolderNpyDataset):
+class motifattn_maskdataset(OnTheFly_FolderNpyDataset):
     """
     Custom dataset class for loading and masking data.
 

@@ -8,13 +8,13 @@ from utils.utils import printlog, load_data, import_model, init_dl_program, Repe
 from experiments.utils_downstream import eval_classification, eval_cluster
 
 # experiment configurations grouped by module
-from experiments.configs.crossmodalrebardist_expconfigs import allcrossmodalrebardist_expconfigs
+from experiments.configs.motifdist_expconfigs import allmotifdist_expconfigs
 from experiments.configs.relcon_expconfigs import allrelcon_expconfigs
 from experiments.configs.papagei_expconfigs import allpapagei_expconfigs
 from experiments.configs.papagei_moods_expconfigs import allpapageimoods_expconfigs
 
 # merge all experiment config dicts into one lookup
-all_expconfigs = {**allcrossmodalrebardist_expconfigs, **allrelcon_expconfigs, 
+all_expconfigs = {**allmotifdist_expconfigs, **allrelcon_expconfigs, 
                   **allpapagei_expconfigs, **allpapageimoods_expconfigs}
                     
 # suppress noisy sklearn / future / user warnings
