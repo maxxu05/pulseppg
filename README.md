@@ -21,7 +21,7 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 
 ### (A) Python Environment
 
-For this project we use [miniconda](https://docs.anaconda.com/free/miniconda/miniconda-install/) to manage dependencies. After installing miniconda, we can install the relcon environment with the following terminal commands:
+For this project we use miniconda to manage dependencies. [After installing miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-2), we can install the pulseppg environment with the following terminal commands:
 
     git clone https://github.com/maxxu05/pulseppg.git   
     cd pulseppg
