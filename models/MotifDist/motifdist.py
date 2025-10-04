@@ -8,7 +8,7 @@ import os
 from tqdm import tqdm
 from models.utils.CustomDatasets import OnTheFly_FolderNpyDataset
 
-class motifdist_ExpConfig(Base_ExpConfig):
+class MotifDist_ExpConfig(Base_ExpConfig):
     """
     Configuration class for the MotifDist experiment, extending Base_ExpConfig.
 
@@ -58,7 +58,7 @@ class Model(BaseModelClass):
             torch.utils.data.DataLoader: Configured data loader.
         """
         # Initialize dataset with masking parameters
-        dataset = motifattn_maskdataset(
+        dataset = MotifAttn_MaskDataset(
             path=X,
             data_normalizer=self.data_normalizer,
             data_clipping=self.data_clipping,
@@ -183,7 +183,7 @@ class Model(BaseModelClass):
 
         return reconstruct_loss
 
-class motifattn_maskdataset(OnTheFly_FolderNpyDataset):
+class MotifAttn_MaskDataset(OnTheFly_FolderNpyDataset):
     """
     Custom dataset class for loading and masking data.
 
