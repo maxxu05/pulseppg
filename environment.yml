@@ -1,4 +1,4 @@
-name: scipy_env
+name: pulseppg
 channels:
   - conda-forge
   - defaults

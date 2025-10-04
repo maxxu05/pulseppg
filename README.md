@@ -9,7 +9,7 @@ Model Weights and Code for PulsePPG (UbiComp, IMWUT, 2025)
 
 
 
-Please read our paper on arxiv here: [https://arxiv.org/abs/2502.01108](https://arxiv.org/abs/2502.01108)
+Please read our paper on arxiv here: https://dl.acm.org/doi/abs/10.1145/3749494
 
 
 
@@ -29,6 +29,6 @@ cd pulseppg
 
 2. conda env create -f environment.yml
 
-3. conda activate scipy_env
+3. conda activate pulseppg
 
 4. conda list
