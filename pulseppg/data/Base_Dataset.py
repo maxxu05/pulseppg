@@ -25,8 +25,8 @@ class Base_DatasetConfig:
     def __init__(
         self,
         data_folder: str,
-        data_normalizer_path: str,
-        data_clipping: bool
+        data_normalizer_path: str = False,
+        data_clipping: bool = False,
     ):
         self.data_folder = data_folder
         self.type = None

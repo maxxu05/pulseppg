@@ -47,7 +47,6 @@ allrelcon_expconfigs["pulseppg"] = RelCon_ModelConfig(
                 name="PPG-BP | Systolic BP | Linear Probe",
                 model_folder="Regress",
                 model_file="linear_probe",
-                final_pool = None,
                 data_config=SupervisedDataConfig(
                    data_folder="pulseppg/data/ppgbp/",
                    X_annotates=["ppg"],
