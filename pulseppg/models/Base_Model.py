@@ -89,7 +89,7 @@ class Base_ModelClass:
 
         self.model_file = config.model_file
 
-        self.run_dir = os.path.join("relcon/experiments/out", config.run_dir)
+        self.run_dir = os.path.join("pulseppg/experiments/out", config.run_dir)
         os.makedirs(self.run_dir, exist_ok=True)
         self.device = config.device
         self.batch_size = config.batch_size
@@ -105,7 +105,7 @@ class Base_ModelClass:
 
     @abstractmethod
     def setup_dataloader(
-        self, data: torch.Tensor, labels: torch.Tensor, train: bool
+        self, data_config, data: torch.Tensor, labels: torch.Tensor, train: bool
     ) -> torch.utils.data.DataLoader:
         ...
 
@@ -125,10 +125,10 @@ class Base_ModelClass:
         writer = SummaryWriter(log_dir=os.path.join(self.run_dir, "tb"))
 
         train_loader = self.setup_dataloader(
-            X=self.train_data, y=self.train_labels, train=True
+            data_config = self.config.data_config, X=self.train_data, y=self.train_labels, train=True
         )
         val_loader = self.setup_dataloader(
-            X=self.val_data, y=self.val_labels, train=False
+            data_config = self.config.data_config, X=self.val_data, y=self.val_labels, train=False
         )
 
         train_loss_list, val_loss_list = [], []

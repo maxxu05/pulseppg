@@ -1,3 +1,7 @@
+pulseppg/data/datasets/*
+pulseppg/experiments/out/*
+.vscode/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

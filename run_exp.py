@@ -57,14 +57,12 @@ if __name__ == "__main__":
     
     table, total_params = count_parameters(model.net)
     print(f"Total Trainable Params: {total_params:,}")
-    # import pdb; pdb.set_trace()
-
 
     try:
-        logpath = os.path.join("relcon/experiments/out", config.run_dir)
+        logpath = os.path.join("pulseppg/experiments/out", config.run_dir)
         printlog(f"----------------------------------------------------------------------------------- Config: {CONFIGFILE} -----------------------------------------------------------------------------------", logpath)
 
-        if (args.retrain == True) or (not os.path.exists(os.path.join("relcon/experiments/out/", 
+        if (args.retrain == True) or (not os.path.exists(os.path.join("pulseppg/experiments/out/", 
                                                                 config.run_dir, 
                                                                 "checkpoint_best.pkl"))):
             model.fit()
