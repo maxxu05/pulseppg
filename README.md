@@ -8,12 +8,6 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 
 
 
-<br/><br/>
-
-## This public codebase is a current work in progress and will be finished by the UbiComp 2025 conference.
-
-<br/><br/>
-
 
 ## Code Usage
 
