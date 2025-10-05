@@ -90,10 +90,27 @@ class Model(Base_ModelClass):
             query = anchor[:, :, self.config.query_dims].to(self.device)
             key = candidate[:, :, self.config.key_dims].to(self.device)
 
-            reconstruction, attn_weights = self.net(query_in=query, key_in=key)
-            reconstruct_loss = torch.sum(
-                torch.square(reconstruction - query.cuda()), dim=(1, 2)
-            )
+            mask_0ismissing = torch.ones(query.shape, dtype=bool)
+            inds = np.arange(query.shape[1])
+            inds_chosen = np.random.choice(inds, query.shape[1] // 2, replace=False)
+            mask_0ismissing[:, inds_chosen,] = 0
+
+            reconstruction, attn_weights = self.net(query_in=query.to(self.device), key_in=key.to(self.device),
+                                                    mask = mask_0ismissing.to(self.device))
+            if self.net.stride != 1:
+                mask_0ismissing_downsamp = torch.clone(mask_0ismissing[:, ::self.net.stride])
+                mask_0ismissing_samesamp = torch.ones(mask_0ismissing.shape).bool()
+                mask_0ismissing_samesamp[:, ::self.net.stride] = mask_0ismissing[:, ::self.net.stride]
+            else:
+                mask_0ismissing_downsamp, mask_0ismissing_samesamp = mask_0ismissing, mask_0ismissing
+                
+            reconstruct_loss = torch.sum(torch.square(reconstruction[~mask_0ismissing_downsamp].view(query.shape[0],
+                                                                                                     -1,
+                                                                                                     query.shape[-1]) - \
+                                                      query[~mask_0ismissing_samesamp].view(query.shape[0],
+                                                                                             -1,
+                                                                                             query.shape[-1]).cuda()), 
+                                                                                             dim=(1,2))
 
         self.net.train()
 

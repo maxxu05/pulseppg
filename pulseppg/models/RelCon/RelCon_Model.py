@@ -36,11 +36,13 @@ class Model(Base_ModelClass):
         motifdist_config = allmotifdist_expconfigs[self.config.motifdist_expconfig_key]
 
         motifdist_config.set_rundir(self.config.motifdist_expconfig_key)
+        motifdist_config.set_device(self.config.device)
         self.motifdist = import_model(model_config=motifdist_config, reload_ckpt="best")
         self.motifdist.net = self.motifdist.net.cuda()
 
-    def setup_dataloader(self, X, y, train: bool) -> torch.utils.data.DataLoader:
+    def setup_dataloader(self, data_config, X, y, train: bool) -> torch.utils.data.DataLoader:
         dataset = RelCon_ValidCandFolders_Dataset(
+            data_config,
             X,
             withinuser_cands=self.config.withinuser_cands,
         )
@@ -196,9 +198,9 @@ from pulseppg.utils.datasets import filter_files_by_npy_count
 
 
 class RelCon_ValidCandFolders_Dataset(OnTheFly_FolderNpyDataset):
-    def __init__(self, path, withinuser_cands=5):
+    def __init__(self, data_config, path, withinuser_cands=5):
         "Initialization"
-        super().__init__(path)
+        super().__init__(data_config, path)
         self.filelist = filter_files_by_npy_count(self.filelist, withinuser_cands + 1)
 
         self.length = len(self.filelist)
