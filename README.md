@@ -17,7 +17,14 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 
 ## Code Usage
 
-### (A) Python Environment
+### (A) Download Model Weights
+
+The pre-trained model weights are available on Zenodo at this DOI [10.5281/zenodo.17270930](https://doi.org/10.5281/zenodo.17270930). Here we provide this bash script for your convenience for downloading and unpacking the weights. 
+
+    bash ./download_pulseppg.sh
+
+
+### (B) Python Environment
 
 For this project we use miniconda to manage dependencies. [After installing miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-2), we can install the pulseppg environment with the following terminal commands:
 
@@ -26,10 +33,4 @@ For this project we use miniconda to manage dependencies. [After installing mini
     conda env create -f env.yml
     conda activate pulseppg
     pip install -e . 
-
-### (B) Download Model Weights
-
-The pre-trained model weights are available on Zenodo at this DOI [10.5281/zenodo.17270930](https://doi.org/10.5281/zenodo.17270930). Here we provide this bash script for your convenience for downloading and unpacking the weights. 
-
-    bash ./download_pulseppg.sh
 
