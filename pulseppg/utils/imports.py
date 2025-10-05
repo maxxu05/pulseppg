@@ -52,7 +52,6 @@ def import_model(
         resume_on=resume_on,
     )
     if reload_ckpt:
-
         try:
             model.load(reload_ckpt)
         except FileNotFoundError as e:
