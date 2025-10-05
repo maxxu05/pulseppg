@@ -26,12 +26,12 @@ allmotifdist_expconfigs["25_10_4_motifdist"] = MotifDist_ModelConfig(
         net_folder="CrossAttn",
         net_file="CrossAttn_Net",
         params={
-            "query_dimsize": 3,
-            "key_dimsize": 3,
+            "query_dimsize": 1,
+            "key_dimsize": 1,
             "kernel_size": 15,
             "embed_dim": 64,
             "double_receptivefield": 5,
-            "stride":5,
+            "stride":10,
         },
     ),
 

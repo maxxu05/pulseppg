@@ -51,15 +51,29 @@ class Model(Base_ModelClass):
                 dataloader, desc="Training" if train else "Evaluating", leave=False
             ):
                 x_original = out_dict["signal"]
-                x_aug = out_dict["signal"]
-                query = x_original[:, :, self.config.query_dims].to(self.device)
-                key = x_aug[:, :, self.config.key_dims].to(self.device)
+                mask_0ismissing = out_dict["mask_0ismissing"]
 
-                reconstruction, attn_weights = self.net(query_in=query, key_in=key)
+                query = x_original[:, :, self.config.query_dims].to(self.device)
+                key = x_original[:, :, self.config.key_dims].to(self.device)
+
+                mask_0ismissing = mask_0ismissing[:,:,self.config.query_dims].to(self.device)
+                
+                if self.net.stride != 1:
+                    mask_0ismissing_downsamp = torch.clone(mask_0ismissing[:, ::self.net.stride])
+                    mask_0ismissing_samesamp = torch.ones_like(mask_0ismissing).bool()
+                    mask_0ismissing_samesamp[:, ::self.net.stride] = mask_0ismissing[:, ::self.net.stride]
+                else:
+                    mask_0ismissing_downsamp, mask_0ismissing_samesamp = mask_0ismissing, mask_0ismissing
+                    
+                reconstruction, attn_weights = self.net(query_in=query, key_in=key,
+                                                        mask=mask_0ismissing)
 
                 reconstruct_loss = torch.sum(
-                    torch.square(reconstruction - query.cuda())
+                    torch.square(reconstruction[~mask_0ismissing_downsamp] - 
+                                 query[~mask_0ismissing_samesamp])
                 )
+
+
 
                 if train:
                     reconstruct_loss.backward()
