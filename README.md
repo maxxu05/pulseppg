@@ -26,3 +26,10 @@ For this project we use miniconda to manage dependencies. [After installing mini
     conda env create -f env.yml
     conda activate pulseppg
     pip install -e . 
+
+### (B) Download Model Weights
+
+The pre-trained model weights are available on Zenodo at this DOI [10.5281/zenodo.17270930](https://doi.org/10.5281/zenodo.17270930). Here we provide this bash script for your convenience for downloading and unpacking the weights. 
+
+    bash ./download_pulseppg.sh
+

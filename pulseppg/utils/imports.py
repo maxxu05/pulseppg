@@ -52,9 +52,11 @@ def import_model(
         resume_on=resume_on,
     )
     if reload_ckpt:
+
         try:
             model.load(reload_ckpt)
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             print(f"{reload_ckpt} not found, cannot reload checkpoint")
+            print(e)
 
     return model

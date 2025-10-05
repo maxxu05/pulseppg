@@ -8,12 +8,11 @@ from pulseppg.models.RelCon.RelCon_Model import RelCon_ModelConfig
 
 allrelcon_expconfigs = {}
 
-# original config called 25_3_8_relcon
-allrelcon_expconfigs["25_3_8_relcon"] = RelCon_ModelConfig(
+allrelcon_expconfigs["pulseppg"] = RelCon_ModelConfig(
     withinuser_cands=1,
     encoder_dims=[0],
 
-    motifdist_expconfig_key="25_10_4_motifdist",
+    motifdist_expconfig_key="motifdist",
 
     data_config=SSLDataConfig(
         data_folder="/disk1/maxmithun/harmfulstressors/data/ppg_acc_np/",
@@ -113,4 +112,4 @@ allrelcon_expconfigs["25_3_8_relcon"] = RelCon_ModelConfig(
     #             epochs=10, lr=.001, batch_size=16, save_epochfreq=5,
     #         ),
     # ]
-)
+) # original config called 25_1_17_relcon_ppgdist100days_c1tp1f128k11s2b12bs64lrp0001_epoch20_100daydata

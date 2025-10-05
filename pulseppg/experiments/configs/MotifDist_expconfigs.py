@@ -10,7 +10,7 @@ from pulseppg.models.MotifDist.MotifDist_Model import MotifDist_ModelConfig, Mas
 allmotifdist_expconfigs = {}
 
 
-allmotifdist_expconfigs["25_10_4_motifdist"] = MotifDist_ModelConfig(
+allmotifdist_expconfigs["motifdist"] = MotifDist_ModelConfig(
     query_dims = [0],
     key_dims =  [0],
 
