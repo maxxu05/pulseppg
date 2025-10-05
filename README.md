@@ -4,8 +4,6 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 <sub><sup>†</sup>Co-first authors &nbsp; &nbsp; | &nbsp; &nbsp; <sup>1</sup>University of Memphis <sup>2</sup>University of Illinois Urbana-Champaign</sub>
 
 
-
-
 ####   Accepted at UbiComp, ACM IMWUT, 2025. Please read our paper here: [https://dl.acm.org/doi/abs/10.1145/3749494](https://dl.acm.org/doi/abs/10.1145/3749494).
 
 
@@ -27,3 +25,4 @@ For this project we use miniconda to manage dependencies. [After installing mini
     cd pulseppg
     conda env create -f env.yml
     conda activate pulseppg
+    pip install -e . 
