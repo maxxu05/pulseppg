@@ -8,6 +8,22 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 
 
 
+## Code Overview
+Below is an outline of the overall structure of our codebase. The code is nicely modularized with modular class-based configs that help define specific components of an experiment, such as a config for tuning the model training or a config for designing the network backbone. Extending this codebase to your own use-cases should be fairly straightforward.
+                    
+```
+run_exp.py           # Main file used to launch experiments  
+pulseppg/            # Source code  
+├── experiments/      
+│   └── configs/     # Config for defining experiment
+├── models/          # Training pipeline
+│   └── RelCon/      # RelCon trainer for Pulse-PPG FM
+│   └── MotifDist/  
+├── nets/            # Network backbones (e.g. ResNet)  
+├── data/            
+│   └── process/     # Downloading and preprocessing data  
+└── eval/            # Evaluation pipeline  
+```
 
 ## Code Usage
 
@@ -28,3 +44,18 @@ For this project we use miniconda to manage dependencies. [After installing mini
     conda activate pulseppg
     pip install -e . 
 
+
+## Citation
+If you use our work in your research, please cite
+
+```bibtex
+@article{saha2025pulse,
+  title={Pulse-ppg: An open-source field-trained ppg foundation model for wearable applications across lab and field settings},
+  author={Saha, Mithun and Xu, Maxwell A and Mao, Wanting and Neupane, Sameer and Rehg, James M and Kumar, Santosh},
+  journal={Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies},
+  volume={9},
+  number={3},
+  pages={1--35},
+  year={2025},
+  publisher={ACM New York, NY, USA}
+}
