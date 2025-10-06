@@ -38,8 +38,6 @@ The pre-trained model weights are available on Zenodo at this DOI [10.5281/zenod
 
 For this project we use miniconda to manage dependencies. [After installing miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-2), we can install the pulseppg environment with the following terminal commands:
 
-    git clone https://github.com/maxxu05/pulseppg.git   
-    cd pulseppg
     conda env create -f env.yml
     conda activate pulseppg
     pip install -e . 
