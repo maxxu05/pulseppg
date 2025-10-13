@@ -53,7 +53,7 @@ Here you can download our public evaluation datasets:
 
 ## Acknowledgements
 
-We are very grateful for the robust PPG foundation evaluation framework, originally laid by the [PaPaGei](https://github.com/Nokia-Bell-Labs/papagei-foundation-model) codebase, which we used extensively to benchmark against. Thank you!
+We are very grateful for the [PaPaGei](https://github.com/Nokia-Bell-Labs/papagei-foundation-model) codebase for constructing a robust PPG FM evaluation framework, which we used extensively to benchmark against. Thank you!
 
 
 
