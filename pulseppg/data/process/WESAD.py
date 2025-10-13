@@ -571,13 +571,13 @@ def main(newhz: int) -> None:
     :param newhz: New sampling frequency for the data.
     """
     # Initialize and process binary classification data
-    binary_processor = BinaryPPGProcessor(zippath="../ppg.zip", ppgpath="../ppg", processedppgpath="../ppg/binary", newhz=newhz)
+    binary_processor = BinaryPPGProcessor(zippath="pulseppg/ppg_wesad.zip", ppgpath="pulseppg/data/datasets/wesad/", processedppgpath="pulseppg/data/datasets/wesad/binary", newhz=newhz)
     binary_processor.downloadextract_PPGfiles()
     binary_processor.preprocess_PPGdata()
     print(f"WESAD PPG data files for binary classification are ready in {os.path.abspath(binary_processor.processedppgpath)}") 
 
     # Initialize and process multi-class classification data
-    multiclass_processor = MultiClassPPGProcessor(zippath="../ppg.zip", ppgpath="../ppg", processedppgpath="../ppg/multiclass", newhz=newhz)
+    multiclass_processor = MultiClassPPGProcessor(zippath="pulseppg/ppg_wesad.zip", ppgpath="pulseppg/data/datasets/wesad/", processedppgpath="pulseppg/data/datasets/wesad/multiclass", newhz=newhz)
     multiclass_processor.downloadextract_PPGfiles()
     multiclass_processor.preprocess_PPGdata()
     print(f"WESAD PPG data files for multiclass classification are ready in {os.path.abspath(multiclass_processor.processedppgpath)}") 

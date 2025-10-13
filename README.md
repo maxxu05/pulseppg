@@ -42,6 +42,20 @@ For this project we use miniconda to manage dependencies. [After installing mini
     conda activate pulseppg
     pip install -e . 
 
+### (C) Download Evaluation Data
+
+Here you can download our public evaluation datasets:
+
+    python pulseppg/data/process/PPGBP.py
+    python pulseppg/data/process/PPGDALIA.py
+    python pulseppg/data/process/SDB.py
+    python pulseppg/data/process/WESAD.py
+
+## Acknowledgements
+
+We are very grateful for the robust PPG foundation evaluation framework, originally laid by the [PaPaGei](https://github.com/Nokia-Bell-Labs/papagei-foundation-model) codebase, which we used extensively to benchmark against. Thank you!
+
+
 
 ## Citation
 If you use our work in your research, please cite

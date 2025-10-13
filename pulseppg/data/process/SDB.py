@@ -132,5 +132,5 @@ def main(newhz: int, zippath: str, ppgpath: str):
     print(f"PPGBP PPG data files for binary classification are ready in {os.path.abspath(processor.ppgpath)}")
 
 if __name__ == "__main__":
-    main(newhz=50, zippath="../ppg.zip", ppgpath="../data/sdb")
-    main(newhz=125, zippath="../ppg.zip", ppgpath="../data/sdb")
+    main(newhz=50, zippath="pulseppg/ppg_sdb.zip", ppgpath="pulseppg/data/datasets/sdb")
+    main(newhz=125, zippath="pulseppg/ppg_sdb.zip", ppgpath="pulseppg/data/datasets/sdb")
