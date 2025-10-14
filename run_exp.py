@@ -73,45 +73,29 @@ if __name__ == "__main__":
             printlog(f"Starting {eval_config.name} evaluation", logpath)
 
             out_test_all = []
-            for cv in range(eval_config.cv_splits): 
-                printlog(f"Starting CV Split {cv} evaluation", logpath)
-                train_data, train_labels, val_data, val_labels, test_data, test_labels = \
-                    load_data(data_config = eval_config.data_config,
-                              cv_split=cv)
-                
-                eval_config.set_rundir(os.path.join(CONFIGFILE, eval_config.name, eval_config.model_file))
-                # loading eval model
-                evalmodel = import_model(eval_config, 
-                                        train_data=train_data, train_labels=train_labels, 
-                                        val_data=val_data, val_labels=val_labels, 
-                                        test_data=test_data, test_labels=test_labels,
-                                        # reload checkpoint is off bc we are loading just the eval model
-                                        reload_ckpt = False, 
-                                        evalmodel=True)
-                # loading pre-trained model
-                model = import_model(config, reload_ckpt=eval_config.pretrain_epoch)
-                # adds pre-trained model to eval model
-                evalmodel.setup_eval(trained_net=model.net)
 
-                if (args.retrain_eval == True) or (not os.path.exists(os.path.join(evalmodel.run_dir, "checkpoint_best.pkl"))):
-                    evalmodel.fit()
+            train_data, train_labels, val_data, val_labels, test_data, test_labels = \
+                load_data(data_config = eval_config.data_config)
+            
+            eval_config.set_rundir(os.path.join(CONFIGFILE, eval_config.name, eval_config.model_file))
+            # loading eval model
+            evalmodel = import_model(eval_config, 
+                                    train_data=train_data, train_labels=train_labels, 
+                                    val_data=val_data, val_labels=val_labels, 
+                                    test_data=test_data, test_labels=test_labels,
+                                    # reload checkpoint is off bc we are loading just the eval model
+                                    reload_ckpt = False, 
+                                    evalmodel=True)
+            # loading pre-trained model
+            model = import_model(config, reload_ckpt=eval_config.pretrain_epoch)
+            # adds pre-trained model to eval model
+            evalmodel.setup_eval(trained_net=model.net)
 
-                out_test = evalmodel.test() # automatically loads
-                out_test_all.append(out_test)
-                printlog(f"Finished CV Split {cv} evaluation", logpath)
+            if (args.retrain_eval == True) or (not os.path.exists(os.path.join(evalmodel.run_dir, "checkpoint_best.pkl"))):
+                evalmodel.fit()
 
-
-            printlog(f"Finished {eval_config.name} evaluation", logpath)
-            out_test_final = {}
-            for key in out_test.keys():
-                key_list = []
-                for i in range(len(out_test_all)):
-                    key_list.append(out_test_all[i][key])
-                out_test_final[f"{key}_mean"] = np.mean(key_list)
-                out_test_final[f"{key}_std"] = np.std(key_list)
-
-                printlog(f"{key}_mean: {np.mean(key_list)}", logpath)
-                printlog(f"{key}_std: {np.std(key_list)}", logpath)
+            out_test = evalmodel.test() # automatically loads
+            printlog(eval_config.name + " " + eval_config.model_file +" ++++++++++++++++++++++++++++++++++++++++", logpath)
 
             all_eval_results_title.extend(list(out_test.keys()))
             all_eval_results.extend(list(out_test.values()))

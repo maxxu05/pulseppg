@@ -3,7 +3,7 @@
 # This script downloads and unpacks the PulsePPG model weights.
 
 # Set the URL and the desired output filename
-URL="https://zenodo.org/records/17271045/files/pulseppg_model_weights.zip?download=1"
+URL="https://zenodo.org/records/17345536/files/pulseppg_model_weights.zip?download=1"
 FILENAME="pulseppg_model_weights.zip"
 
 # --- Download the file ---

@@ -33,62 +33,55 @@ allrelcon_expconfigs["pulseppg"] = RelCon_ModelConfig(
     ),
     epochs = 20, lr=0.0001, batch_size=16, save_epochfreq=1,
     eval_configs = [
-    #         Base_EvalConfig(
-    #             name="HHAR | Linear Probe | Comparison against SSL Benchmark", 
-    #             model_folder="Classify",
-    #             model_file="linear_probe",
-    #             cv_splits = 5,
-    #             # data parameters
-    #             data_config=SupervisedDataConfig(
-    #                 data_folder="pulseppg/data/datasets/sslbench/hhar/processed",
-    #             ),
-    #         ),
+            # Base_EvalConfig(
+            #     name="PPG-BP | Systolic BP | Linear Probe",
+            #     model_folder="Regress",
+            #     model_file="linear_probe",
+            #     data_config=SupervisedDataConfig(
+            #        data_folder="pulseppg/data/datasets/ppgbp/",
+            #        X_annotates=["_ppg_50Hz"],
+            #        y_annotate="_sysbp"
+            #     ),
+            # ),
+            # Base_EvalConfig(
+            #     name="PPG-BP | Diastolic BP | Linear Probe",
+            #     model_folder="Regress",
+            #     model_file="linear_probe",
+            #     data_config=SupervisedDataConfig(
+            #        data_folder="pulseppg/data/datasets/ppgbp/",
+            #        X_annotates=["_ppg_50Hz"],
+            #        y_annotate="_diasbp"
+            #     ),
+            # ),
+            # Base_EvalConfig(
+            #     name="PPG-BP | Avg HR | Linear Probe",
+            #     model_folder="Regress",
+            #     model_file="linear_probe",
+            #     data_config=SupervisedDataConfig(
+            #        data_folder="pulseppg/data/datasets/ppgbp/",
+            #        X_annotates=["_ppg_50Hz"],
+            #        y_annotate="_hr"
+            #     ),
+            # ),
+            # Base_EvalConfig(
+            #     name="PPG-DaLiA | HR | Linear Probe",
+            #     model_folder="Regress",
+            #     model_file="linear_probe",
+            #     data_config=SupervisedDataConfig(
+            #        data_folder="pulseppg/data/datasets/dalia/",
+            #        X_annotates=["_ppg_50Hz"],
+            #        y_annotate="_hr"
+            #     ),
+            # ),
             Base_EvalConfig(
-                name="PPG-BP | Systolic BP | Linear Probe",
-                model_folder="Regress",
+                name="PPG-DaLiA | Activity | Linear Probe",
+                model_folder="Classify",
                 model_file="linear_probe",
                 data_config=SupervisedDataConfig(
-                   data_folder="pulseppg/data/ppgbp/",
-                   X_annotates=["ppg"],
-                   y_annotate="sysbp"
+                   data_folder="pulseppg/data/datasets/dalia/",
+                   X_annotates=["_ppg_50Hz"],
+                   y_annotate="_act"
                 ),
             ),
-            # Base_EvalConfig(
-            #     name="PPG-BP_diasbp",
-            #     model_folder="Regress",
-            #     model_file="ridgepapageireg",
-            #     final_pool = None,
-            #     evalnetparams = {'embed_dim': 512,
-            #                      "loss": "mse"},
-            #     data_config=SupervisedDataConfig(
-            #        data_folder="ppgbp/",
-            #        X_annotates=["ppg"],
-            #        y_annotate="diasbp"
-            #     ),
-            # ),
-            # Base_EvalConfig(
-            #     name="PPG-BP_hr",
-            #     model_folder="Regress",
-            #     model_file="ridgepapageireg",
-            #     final_pool = None,
-            #     data_config=SupervisedDataConfig(
-            #        data_folder="ppgbp/",
-            #        X_annotates=["ppg"],
-            #        y_annotate="hr"
-            #     ),
-            # ),
-            # Base_EvalConfig(
-            #     name="PPG-BP_ht_binary",
-            #     model_folder="Classifier",
-            #     model_file="logisticsk",
-            #     final_pool = None,
-            #     # data parameters
-            #     data_config=SupervisedDataConfig(
-            #        data_folder="ppgbp/",
-            #        X_annotates=["ppg"],
-            #        y_annotate="htbinary"
-            #     ),
-            #     # epochs=10, lr=.01, batch_size=16, save_epochfreq=5,
-            # ),
     ]
 ) # original config called 25_1_17_relcon_ppgdist100days_c1tp1f128k11s2b12bs64lrp0001_epoch20_100daydata

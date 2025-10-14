@@ -1,4 +1,4 @@
-from relcon.eval.Base_Eval import Base_EvalClass
+from pulseppg.eval.Base_Eval import Base_EvalClass
 import numpy as np
 import torch
 from torch import nn
@@ -8,12 +8,12 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 from tqdm import tqdm
 import joblib
-from relcon.utils.utils import printlog
+from pulseppg.utils.utils import printlog
 
-from sklearn import metrics
-from sklearn.model_selection import GridSearchCV, PredefinedSplit
+from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import f1_score, average_precision_score, roc_auc_score, accuracy_score, precision_score, recall_score
 
 
 class Model(Base_EvalClass):
@@ -29,10 +29,6 @@ class Model(Base_EvalClass):
         printlog(f"Begin Training {self.model_file}", self.run_dir)
 
         writer = SummaryWriter(log_dir=os.path.join(self.run_dir, "tb"))
-
-        num_train = self.train_data.shape[0]
-        num_val = self.val_data.shape[0]
-        ps = PredefinedSplit(test_fold=[-1 for _ in range(num_train)] + [0 for _ in range(num_val)])
 
         X_trainval = torch.concatenate((self.train_data, self.val_data))
         y_trainval = np.concatenate((self.train_labels, self.val_labels))
@@ -54,14 +50,12 @@ class Model(Base_EvalClass):
         X_trainval = scaler.fit_transform(X_trainval)
 
         estimator = LogisticRegression(random_state=42)
-        param_grid = [
-            {'penalty': ['l2'], 'C': [1e-1, 1e-2, 1e-3, 1e-4, 1e-5]},
-            {'penalty': [None]}  # No regularization
-        ]
+        param_grid ={'penalty': ['l2'], 'C': [0.01, 0.1, 1, 10, 100], 'solver': ['lbfgs'], 'max_iter': [1000, 10_000]}
+
 
         grid_search = GridSearchCV(estimator=estimator, 
                             param_grid=param_grid, 
-                            cv=ps, 
+                            cv=4, 
                             scoring='f1_macro', 
                             verbose=self.config.verbose, 
                             n_jobs=self.config.num_threads)
@@ -111,16 +105,35 @@ class Model(Base_EvalClass):
         X_test = self.scaler.transform(X_test)
         y_pred = self.grid_search.predict(X_test)
 
-        # # legacy code
-        # d = self.estimator.decision_function(X_test)
-        # total_probs = np.exp(d) / np.sum(np.exp(d), axis=-1, keepdims=True)
+        d = self.grid_search.decision_function(X_test)
+        total_probs = np.exp(d) / np.sum(np.exp(d), axis=-1, keepdims=True)
 
         # Calculate total metrics
-        total_f1 = metrics.f1_score(y_true=y_test, y_pred=y_pred, average="macro")
+        total_f1 = f1_score(y_true=y_test, y_pred=y_pred, average="macro")
+        total_auprc = 0 # average_precision_score(y_true=y_test, y_score=total_probs, average="macro")
+        total_auroc = roc_auc_score(y_true=y_test, y_score=total_probs, average="macro", multi_class='ovo')
+        total_precision = precision_score(y_true=y_test, y_pred=y_pred, average="macro")
+        total_recall = recall_score(y_true=y_test, y_pred=y_pred, average="macro")
+        total_acc = accuracy_score(y_true=y_test, y_pred=y_pred)
 
         # Build the printout string
         printoutstring = f"F1/Test={total_f1:5f}\n"
-        writer.add_scalar("F1/Test", total_f1, 0)
+        writer.add_scalar('F1/Test', total_f1, 0)
+
+        printoutstring += f"Acc/Test={total_acc:5f}\n"
+        writer.add_scalar('Acc/Test', total_acc, 0)
+
+        printoutstring += f"Precision/Test={total_precision:5f}\n"
+        writer.add_scalar('Precision/Test', total_precision, 0)
+
+        printoutstring += f"Recall/Test={total_recall:5f}\n"
+        writer.add_scalar('Recall/Test', total_recall, 0)
+
+        printoutstring += f"AUPRC/Test={total_auprc:5f}\n"
+        writer.add_scalar('AUPRC/Test', total_auprc, 0)
+
+        printoutstring += f"AUROC/Test={total_auroc:5f}\n"
+        writer.add_scalar('AUROC/Test', total_auroc, 0)
 
         # Log the metrics
         printlog(printoutstring, self.run_dir)
@@ -128,4 +141,9 @@ class Model(Base_EvalClass):
         # Return metrics as a dictionary
         return {
             "F1": total_f1,
+            "Acc": total_acc,
+            "Precision": total_precision,
+            "Recall": total_recall,
+            "AUPRC": total_auprc,
+            "AUROC": total_auroc,
         }

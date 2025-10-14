@@ -20,7 +20,6 @@ class Base_EvalConfig(Base_ModelConfig):
                  ##############################
                  pretrain_epoch="best",
                  evalnetparams = {},
-                 cv_splits = 1,
                  num_threads=-1, verbose=1,
                  ):
         self.name = name
@@ -44,9 +43,6 @@ class Base_EvalConfig(Base_ModelConfig):
 
         self.num_threads=num_threads
         self.verbose=verbose
-
-        self.cv_splits = cv_splits
-
     
 class Base_EvalClass(Base_ModelClass):
     def __init__(

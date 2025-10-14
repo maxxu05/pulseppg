@@ -1,4 +1,4 @@
-from relcon.eval.Base_Eval import Base_EvalClass
+from pulseppg.eval.Base_Eval import Base_EvalClass
 import numpy as np
 import torch
 from torch import nn
@@ -8,12 +8,13 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 from tqdm import tqdm
 import joblib
-from relcon.utils.utils import printlog
+from pulseppg.utils.utils import printlog
 
 from sklearn import metrics
 from sklearn.model_selection import GridSearchCV, PredefinedSplit
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error, mean_absolute_percentage_error, mean_poisson_deviance
 
 
 class Model(Base_EvalClass):
@@ -121,22 +122,22 @@ class Model(Base_EvalClass):
         total_poisson = mean_poisson_deviance(y_test, y_pred)
 
         # Build the printout string
-        printoutstring = f"MAE/Test={total_mae:5f} ({lower_bound_ci_mae:5f}, {upper_bound_ci_mae:5f})\n"
+        printoutstring = f"MAE/Test={total_mae:5f}\n"
         writer.add_scalar('MAE/Test', total_mae, 0)
 
-        printoutstring += f"SDAE/Test={total_sdae:5f} ({lower_bound_ci_sdae:5f}, {upper_bound_ci_sdae:5f})\n"  # Add SDAE and its bounds
+        printoutstring += f"SDAE/Test={total_sdae:5f}\n"
         writer.add_scalar('SDAE/Test', total_sdae, 0)
 
-        printoutstring += f"MSE/Test={total_mse:5f} ({lower_bound_ci_mse:5f}, {upper_bound_ci_mse:5f})\n"
+        printoutstring += f"MSE/Test={total_mse:5f}\n"
         writer.add_scalar('MSE/Test', total_mse, 0)
 
-        printoutstring += f"SDSE/Test={total_sdse:5f} ({lower_bound_ci_sdse:5f}, {upper_bound_ci_sdse:5f})\n"  # Add SDSE and its bounds
+        printoutstring += f"SDSE/Test={total_sdse:5f}\n"
         writer.add_scalar('SDSE/Test', total_sdse, 0)
 
-        printoutstring += f"R2/Test={total_r2:5f} ({lower_bound_ci_r2:5f}, {upper_bound_ci_r2:5f})\n"
+        printoutstring += f"R2/Test={total_r2:5f}\n"
         writer.add_scalar('R2/Test', total_r2, 0)
 
-        printoutstring += f"MAPE/Test={total_mape:5f} ({lower_bound_ci_mape:5f}, {upper_bound_ci_mape:5f})\n"
+        printoutstring += f"MAPE/Test={total_mape:5f}\n"
         writer.add_scalar('MAPE/Test', total_mape, 0)
 
         # Log the metrics
@@ -151,3 +152,17 @@ class Model(Base_EvalClass):
             "R2": total_r2,
             "MAPE": total_mape,
         }
+
+def standard_deviation_of_absolute_error(true_values, predicted_values):
+    # Calculate absolute errors
+    absolute_errors = np.abs(np.array(true_values) - np.array(predicted_values))
+    
+    # Calculate and return the standard deviation of absolute errors
+    return np.std(absolute_errors)
+
+def standard_deviation_of_squared_error(true_values, predicted_values):
+    # Calculate squared errors
+    squared_errors = np.square(np.array(true_values) - np.array(predicted_values))
+    
+    # Calculate and return the standard deviation of squared errors
+    return np.std(squared_errors)
