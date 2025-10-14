@@ -42,9 +42,9 @@ For this project we use miniconda to manage dependencies. [After installing mini
     conda activate pulseppg
     pip install -e . 
 
-### (C) Download Evaluation Data
+### (C) Download and Preprocess Evaluation Data
 
-Here you can download our public evaluation datasets:
+Here you can download and preprocess our public evaluation datasets:
 
     python pulseppg/data/process/PPGBP.py
     python pulseppg/data/process/PPGDALIA.py
