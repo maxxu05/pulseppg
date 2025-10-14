@@ -68,6 +68,7 @@ If you want to re-run from scratch, change the `data_folder` parameter in `exper
 PLEASE NOTE THAT PulsePPG was pre-trained with 4-minute-long data inputs BUT you can pre-train with any time length inputs (i.e. 30 seconds). This is because we use a temporal pooling mechanism that collapses the time dimension. 
 
 After setting up the `data_folder`, to retrain, simply run
+
     python run_exp.py --config motifdist --retrain
     python run_exp.py --config pulseppg --retrain
 
