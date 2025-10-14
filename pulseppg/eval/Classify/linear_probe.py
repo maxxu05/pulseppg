@@ -110,7 +110,7 @@ class Model(Base_EvalClass):
 
         # Calculate total metrics
         total_f1 = f1_score(y_true=y_test, y_pred=y_pred, average="macro")
-        total_auprc = 0 # average_precision_score(y_true=y_test, y_score=total_probs, average="macro")
+        total_auprc = average_precision_score(y_true=y_test, y_score=total_probs, average="macro")
         total_auroc = roc_auc_score(y_true=y_test, y_score=total_probs, average="macro", multi_class='ovo')
         total_precision = precision_score(y_true=y_test, y_pred=y_pred, average="macro")
         total_recall = recall_score(y_true=y_test, y_pred=y_pred, average="macro")
