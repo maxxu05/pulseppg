@@ -58,11 +58,11 @@ In order to run our evaluations, after downloading the model weights or after re
     python run_exp.py --config pulseppg
 
 ### Evaluate PulsePPG with your own Evaluation data
-In order to run evaluations on your own data, please add your data in `pulseppg/data/datasets` and add an `Eval_Config` in `experiments/out/RelCon_expconfigs.py`, then run `python run_exp.py --config pulseppg` again. Note that the configs are limited to linear probe right now, and fine-tuning will be added later for best task-specific performance.
+In order to run evaluations on your own data, please add your data in `pulseppg/data/datasets` and add an `Eval_Config` in `experiments/out/PulsePPG_expconfigs.py`, then run `python run_exp.py --config pulseppg` again. Note that the configs are limited to linear probe right now, and fine-tuning will be added later for best task-specific performance.
 
 
 ### Re-train PulsePPG with your own Pre-training data
-If you want to re-run from scratch, change the `data_folder` parameter in `experiments/out/MotifDist_expconfigs.py` and `experiments/out/RelCon_expconfigs.py` TO YOUR OWN PRE-TRAINING DATA FOLDER. Ensure the new pre-training `data_folder` holds the same hierarchy (e.g. `train/subject_id/data_input_{i}.npy`). See `pulseppg/data/process/DUMMY.py` for more details on expected file hierarchy. 
+If you want to re-run from scratch, change the `data_folder` parameter in `experiments/out/MotifDist_expconfigs.py` and `experiments/out/PulsePPG_expconfigs.py` TO YOUR OWN PRE-TRAINING DATA FOLDER. Ensure the new pre-training `data_folder` holds the same hierarchy (e.g. `train/subject_id/data_input_{i}.npy`). See `pulseppg/data/process/DUMMY.py` for more details on expected file hierarchy. 
 
 PLEASE NOTE THAT PulsePPG was pre-trained with 4-minute-long data inputs BUT you can pre-train with any time length inputs (i.e. 30 seconds). This is because we use a temporal pooling mechanism that collapses the time dimension. 
 
@@ -71,7 +71,7 @@ After setting up the `data_folder`, to retrain, simply run
     python run_exp.py --config pulseppg --retrain
 
 
-## TODO Code Additions
+### TODO Code Additions
 These will be added over the next few weeks or so. Feel free to follow-up on us via email or github, so we know that you are interested.
 * Add interactive colab/ipynb for easier usage
 * Add fine-tuning evals in

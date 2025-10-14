@@ -10,9 +10,9 @@ from pulseppg.utils.imports import import_model
 from pulseppg.utils.datasets import load_data
 
 from pulseppg.experiments.configs.MotifDist_expconfigs import allmotifdist_expconfigs
-from pulseppg.experiments.configs.RelCon_expconfigs import allrelcon_expconfigs
+from pulseppg.experiments.configs.PulsePPG_expconfigs import allpulseppg_expconfigs
 
-all_expconfigs = {**allmotifdist_expconfigs, **allrelcon_expconfigs}
+all_expconfigs = {**allmotifdist_expconfigs, **allpulseppg_expconfigs}
 
 import warnings
 from sklearn.exceptions import ConvergenceWarning
