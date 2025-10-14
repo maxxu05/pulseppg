@@ -8,7 +8,7 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 
 
 
-## Code Overview
+## 🔎 Code Overview
 Below is an outline of the overall structure of our codebase. The code is nicely modularized with modular class-based configs that help define specific components of an experiment, such as a config for tuning the model training or a config for designing the network backbone. Extending this codebase to your own use-cases should be fairly straightforward.
                     
 ```
@@ -25,7 +25,7 @@ pulseppg/            # Source code
 └── eval/            # Evaluation pipeline  
 ```
 
-## Code Setup
+## 🛠️ Code Setup
 
 ### (A) Download Model Weights
 
@@ -51,7 +51,7 @@ Here you can download and preprocess our public evaluation datasets:
     python pulseppg/data/process/SDB.py
     python pulseppg/data/process/WESAD.py
 
-## Code Usage
+## 👨‍💻 Code Usage
 
 ### (A) Evaluate PulsePPG
 In order to run our evaluations, after downloading the model weights or after re-training our model, simply run
@@ -78,13 +78,13 @@ These will be added over the next few weeks or so. Feel free to follow-up on us 
 * Add PaPaGei and other Time-series FMs in
 
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 We are very grateful for the [PaPaGei](https://github.com/Nokia-Bell-Labs/papagei-foundation-model) codebase for constructing a robust PPG FM evaluation framework, which we used extensively to benchmark against. Thank you!
 
 
 
-## Citation
+## 📜 Citation
 If you use our work in your research, please cite
 
 ```bibtex
