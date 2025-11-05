@@ -98,7 +98,9 @@ if __name__ == "__main__":
             if (args.retrain_eval == True) or (not os.path.exists(os.path.join(evalmodel.run_dir, "checkpoint_best.pkl"))):
                 evalmodel.fit()
 
-            out_test = evalmodel.test(test_idx=int(args.test_idx), dontprint=args.dontprint) # automatically loads
+            if args.test_idx is not None:
+                args.test_idx=int(args.test_idx)
+            out_test = evalmodel.test(test_idx=args.test_idx, dontprint=args.dontprint) # automatically loads
             printlog(eval_config.name + " " + eval_config.model_file +" ++++++++++++++++++++++++++++++++++++++++", logpath)
 
             all_eval_results_title.extend(list(out_test.keys()))
