@@ -79,7 +79,7 @@ class Model(Base_EvalClass):
 
         printlog(f"Reloading {self.model_file} Model's CV", self.run_dir)
 
-    def test(self):
+    def test(self, test_idx=None, dontprint=False):
         printlog(f"Loading Best From Training", self.run_dir)
         self.load()
 
@@ -107,6 +107,11 @@ class Model(Base_EvalClass):
 
         d = self.grid_search.decision_function(X_test)
         total_probs = np.exp(d) / np.sum(np.exp(d), axis=-1, keepdims=True)
+
+        if test_idx is not None:
+            print(f"Predicted class is {y_pred[test_idx]}")
+            print(f"Predicted probability is {total_probs[test_idx]}")
+
 
         # Calculate total metrics
         total_f1 = f1_score(y_true=y_test, y_pred=y_pred, average="macro")
@@ -136,7 +141,7 @@ class Model(Base_EvalClass):
         writer.add_scalar('AUROC/Test', total_auroc, 0)
 
         # Log the metrics
-        printlog(printoutstring, self.run_dir)
+        printlog(printoutstring, self.run_dir, dontprint=dontprint)
 
         # Return metrics as a dictionary
         return {

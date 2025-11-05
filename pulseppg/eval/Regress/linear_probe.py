@@ -85,7 +85,7 @@ class Model(Base_EvalClass):
 
         printlog(f"Reloading {self.model_file} Model's CV", self.run_dir)
 
-    def test(self):
+    def test(self, test_idx=None, dontprint=False):
         printlog(f"Loading Best From Training", self.run_dir)
         self.load()
 
@@ -111,6 +111,8 @@ class Model(Base_EvalClass):
         X_test = self.scaler.transform(X_test)
         y_pred = self.grid_search.predict(X_test)
 
+        if test_idx is not None:
+            print(f"Predicted value is {y_pred[test_idx]}")
 
         # Calculate the metrics
         total_mae = mean_absolute_error(y_test, y_pred)
@@ -141,7 +143,7 @@ class Model(Base_EvalClass):
         writer.add_scalar('MAPE/Test', total_mape, 0)
 
         # Log the metrics
-        printlog(printoutstring, self.run_dir)
+        printlog(printoutstring, self.run_dir, dontprint=dontprint)
 
         # Return metrics as a dictionary
         return {

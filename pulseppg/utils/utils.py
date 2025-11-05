@@ -8,10 +8,11 @@ import time
 from tqdm import tqdm
 
 
-def printlog(line, path, type="a", dontwrite=False):
+def printlog(line, path, type="a", dontwrite=False, dontprint=False):
     line = f"{datetime.now().strftime('%y/%m/%d %H:%M')} | " + line
     # we have to use tqdm.write() to not interfere with tqdm code...
-    tqdm.write(line)
+    if not dontprint:
+        tqdm.write(line)
     if not dontwrite:
         with open(os.path.join(path, "log.txt"), type) as file:
             file.write(line + "\n")

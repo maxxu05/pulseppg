@@ -32,6 +32,10 @@ if __name__ == "__main__":
                         action='store_true', default=False)
     parser.add_argument("--retrain_eval", help="WARNING: Retrain eval model config, overriding existing model directory",
                         action='store_true', default=False)
+    parser.add_argument("--test_idx", help="Choose specific index to output predicted value from",
+                        default=None)
+    parser.add_argument("--dontprint", help="Printing verbose output",
+                        action='store_true', default=False)
     parser.add_argument("--resume_on", help="resume unfinished model training",
                         action='store_true', default=False)
     args = parser.parse_args()
@@ -94,7 +98,7 @@ if __name__ == "__main__":
             if (args.retrain_eval == True) or (not os.path.exists(os.path.join(evalmodel.run_dir, "checkpoint_best.pkl"))):
                 evalmodel.fit()
 
-            out_test = evalmodel.test() # automatically loads
+            out_test = evalmodel.test(test_idx=int(args.test_idx), dontprint=args.dontprint) # automatically loads
             printlog(eval_config.name + " " + eval_config.model_file +" ++++++++++++++++++++++++++++++++++++++++", logpath)
 
             all_eval_results_title.extend(list(out_test.keys()))
