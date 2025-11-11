@@ -7,6 +7,7 @@ Mithun Saha<sup>1,†</sup>, Maxwell A. Xu<sup>2,†</sup>, Wanting Mao<sup>2</s
 ####   Accepted at UbiComp, ACM IMWUT, 2025. Please read our paper here: [https://dl.acm.org/doi/abs/10.1145/3749494](https://dl.acm.org/doi/abs/10.1145/3749494).
 
 
+Here is a quick [Colab demo](https://colab.research.google.com/drive/1_5XlucFPiGC10ZYD6nA9zy_CRpN7vOv1?usp=sharing) demonstrating how to run our code. Colab does not allow you to easily install packages with a specific environment, so the colab acts as a "controller" to run the codebase, as if it were a terminal environment. 
 
 ## 🔎 Code Overview
 Below is an outline of the overall structure of our codebase. The code is nicely modularized with modular class-based configs that help define specific components of an experiment, such as a config for tuning the model training or a config for designing the network backbone. Extending this codebase to your own use-cases should be fairly straightforward.
