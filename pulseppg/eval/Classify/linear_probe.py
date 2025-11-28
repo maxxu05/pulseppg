@@ -11,7 +11,7 @@ import joblib
 from pulseppg.utils.utils import printlog
 
 from sklearn.model_selection import GridSearchCV
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, label_binarize
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, average_precision_score, roc_auc_score, accuracy_score, precision_score, recall_score
 
@@ -50,8 +50,7 @@ class Model(Base_EvalClass):
         X_trainval = scaler.fit_transform(X_trainval)
 
         estimator = LogisticRegression(random_state=42)
-        param_grid ={'penalty': ['l2'], 'C': [0.01, 0.1, 1, 10, 100], 'solver': ['lbfgs'], 'max_iter': [1000, 10_000]}
-
+        param_grid ={'penalty': ['l2'], 'C': [0.01, 0.1, 1, 10, 100], 'solver': ['lbfgs'], 'max_iter': [2000, 10_000]}
 
         grid_search = GridSearchCV(estimator=estimator, 
                             param_grid=param_grid, 
@@ -115,7 +114,7 @@ class Model(Base_EvalClass):
 
         # Calculate total metrics
         total_f1 = f1_score(y_true=y_test, y_pred=y_pred, average="macro")
-        total_auprc = average_precision_score(y_true=y_test, y_score=total_probs, average="macro")
+        total_auprc = average_precision_score(y_true=label_binarize(y_test, classes=np.unique(y_test)), y_score=total_probs, average="macro")
         total_auroc = roc_auc_score(y_true=y_test, y_score=total_probs, average="macro", multi_class='ovo')
         total_precision = precision_score(y_true=y_test, y_pred=y_pred, average="macro")
         total_recall = recall_score(y_true=y_test, y_pred=y_pred, average="macro")

@@ -38,7 +38,7 @@ Get started by cloning our codebase.
 
 The pre-trained model weights are available on Zenodo at this DOI [10.5281/zenodo.17270930](https://doi.org/10.5281/zenodo.17270930). Here we provide this bash script for your convenience for downloading and unpacking the weights. 
 
-    bash ./download_pulseppg.sh
+    bash ./download_model.sh
 
 
 ### (B) Python Environment
